@@ -150,8 +150,6 @@ require(["underscore", "execution-daemon"], function(_, ExecutionDaemon) {
     ensureConnection();
   };
 
-  window.ExecutionDaemon = ExecutionDaemon;
-
   var connectionDaemon = new ExecutionDaemon({
     fn: _.bind(keepConnected, this),
     interval: 5,
