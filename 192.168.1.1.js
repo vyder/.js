@@ -50,8 +50,12 @@ define("execution-daemon",
       this._endTime = moment().add(period.value, period.units);
 
       this._executionID = null;
+
+      this._disposed = false;
     },
     start: function() {
+      if( this._disposed ) { throw new Error("This ExecutionDaemon has been disposed."); }
+
       if( !this._running ) {
         this._executionID = setInterval(_.bind(this._exec, this), this._interval);
         this._running = true;
@@ -60,6 +64,8 @@ define("execution-daemon",
       }
     },
     stop: function() {
+      if( this._disposed ) { throw new Error("This ExecutionDaemon has been disposed."); }
+
       if( this._running ) {
         clearInterval(this._executionID);
         console.log("Daemon has stopped. Execution ID: " + this._executionID);
@@ -68,10 +74,13 @@ define("execution-daemon",
       }
     },
     isRunning: function() {
+      if( this._disposed ) { throw new Error("This ExecutionDaemon has been disposed."); }
+
       return this._running;
     },
     _exec: function() {
-      console.log("exec");
+      if( this._disposed ) { throw new Error("This ExecutionDaemon has been disposed."); }
+
       if( this._running ) {
         if( moment().isBefore(this._endTime) ) {
           console.log("Daemon still going strong.");
@@ -80,6 +89,18 @@ define("execution-daemon",
           this.stop();
         }
       }
+    },
+    dispose: function() {
+      if( this._disposed ) { throw new Error("This ExecutionDaemon has been disposed."); }
+
+      this.stop();
+      this._fn = null;
+      this._interval = null;
+      this._endTime = null;
+      this._executionID = null;
+      this._running = null;
+
+      this._disposed = true;
     }
   });
 
