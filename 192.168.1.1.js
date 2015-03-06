@@ -83,7 +83,6 @@ define("execution-daemon",
 
       if( this._running ) {
         if( moment().isBefore(this._endTime) ) {
-          console.log("Daemon still going strong.");
           this._fn.call();
         } else {
           this.stop();
@@ -131,14 +130,16 @@ require(["underscore", "execution-daemon"], function(_, ExecutionDaemon) {
     return ($("#index_connection_status").text() === "Connecting...");
   };
   var clickConnectButton = function() {
-    $("#index_connection_button").click();
+    console.log("Clicking connect button...");
+    $("#connect_btn").click();
   };
   var ensureConnection = function() {
-    if( !isConnected() && !isConnecting() ) {
-      console.log("Connecting...");
-      clickConnectButton();
+    if( isConnected() ) {
+      console.log("Still connected.");
+    } else if( isConnecting() ) {
+      console.log("Still connecting...");
     } else {
-      console.log("Connected.");
+      clickConnectButton();
     }
   };
 
