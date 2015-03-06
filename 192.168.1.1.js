@@ -11,7 +11,7 @@ define("execution-daemon",
   var ExecutionDaemon = function() {
     this.initialize.apply(this, arguments);
   };
-  $.extend(ExecutionDaemon.prototype, {
+  _.extend(ExecutionDaemon.prototype, {
     /*
      * options:
      *    * 'fn'       - Function = To execute periodically every 'interval' amount of time
